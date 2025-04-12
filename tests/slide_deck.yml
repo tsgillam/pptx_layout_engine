@@ -1,0 +1,58 @@
+template: ../src/pptx_layout_engine/resources/powerpoint_templates/template.pptx
+defaults:
+  slide_layout_path: ../src/pptx_layout_engine/resources/slide_layouts/
+  shape_layout_path: ../src/pptx_layout_engine/resources/slide_layouts/
+slides:
+  - layout: bullet_slide.yml
+    content:
+      placeholder0: "Bullet Slide Title"
+      placeholder1: ["Point A", "Point B", "Point C"]
+
+  - layout: comparison.yml
+    content:
+      placeholder0: "Comparison Title"
+      placeholder1: "Item A"
+      placeholder2: "Detail A"
+      placeholder3: "Item B"
+      placeholder4: "Detail B"
+
+  - layout: content_with_caption.yml
+    content:
+      placeholder0: "Main Content"
+      placeholder1: "Caption Header"
+      placeholder2: "Additional Info"
+
+  - layout: dlg_title_slide.yml
+    content:
+      title: "Presentation Title"
+      sub_title: "Strategic Report"
+      date: "April 2025"
+
+  - layout: image_focus.yml
+    content:
+      title: "Product Highlight"
+      hero_image: "output.png"  # Place an image at root or change path
+
+  - layout: picture_with_caption.yml
+    content:
+      placeholder0: "Picture Header"
+      placeholder1: "Image Description"
+      placeholder2: "Footer Text"
+
+  - layout: section_header.yml
+    content:
+      placeholder0: "Section 1"
+      placeholder1: "Overview of Insights"
+
+  - layout: table_summary.yml
+    content:
+      title: "Financial Overview"
+      content_2:
+        - ["Region", "Q1", "Q2"]
+        - ["North", "$1.2M", "$1.3M"]
+        - ["South", "$0.9M", "$1.1M"]
+
+  - layout: title_and_content.yml
+    content:
+      placeholder0: "Final Thoughts"
+      placeholder1: ["Summary 1", "Summary 2", "Action Plan"]

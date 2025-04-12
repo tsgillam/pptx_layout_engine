@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: pptx_layout_engine
+Version: 0.1.0
+Summary: Generate PowerPoint presentations from YAML layout + content files
+Author-email: Tom Gillam <tom.gillam@yahoo.com>
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: python-pptx
+Requires-Dist: pyyaml

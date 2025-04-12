@@ -1,0 +1,48 @@
+layout:
+  left_margin: 0.67
+  top_margin: 0.4
+  mid_point: 6.67
+defaults:
+  font: Avenir LT Next Pro
+  font_size: 18
+  top: 0.67
+  left: 0.4
+  vertical_align: top
+  horizontal_align: left
+color_schemes:
+  green: 
+    - header_green: [78,167,46]
+    - light_green: [208,225,205]
+    - dark_green: [233,241,232]
+shapes:
+  title:
+    type: text
+    font_weight: bold
+    font_size: 36
+    width: 11.5
+    height: 1.45
+    top: 2.34
+    left: .92
+    vertical_align: bottom
+    horizontal_align: right
+  sub_title:
+    type: text
+    font_weight: bold
+    font_size: 36
+    font_italic: True
+    font_color: [78,167,46]
+    width: 11.5
+    height: 1
+    top: 3.8
+    left: .92
+    horizontal_align: right
+  date:
+    type: text
+    font_weight: bold
+    font_size: 24
+    width: 11.5
+    height: 1
+    top: 5.38
+    left: .92
+    horizontal_align: right
+    vertical_align: top

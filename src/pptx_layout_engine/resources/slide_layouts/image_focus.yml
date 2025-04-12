@@ -1,0 +1,22 @@
+defaults:
+  font: Avenir LT Next Pro
+  font_size: 18
+  top: 0.67
+  left: 0.4
+
+shapes:
+  title:
+    type: text
+    font_weight: bold
+    font_size: 28
+    top: 0.67
+    left: 0.4
+    width: 12
+    height: 1
+
+  hero_image:
+    type: image
+    top: 1.7
+    left: 1.0
+    width: 10
+    height: 5.5

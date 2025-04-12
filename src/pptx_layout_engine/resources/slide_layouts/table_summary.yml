@@ -1,0 +1,32 @@
+defaults:
+  font: Avenir LT Next Pro
+  font_size: 16
+  horizontal_align: center
+  vertical_align: middle
+
+color_schemes:
+  green:
+    - header_green: [78, 167, 46]
+    - row_light: [233, 241, 232]
+    - row_dark: [208, 225, 205]
+
+shapes:
+  title:
+    type: text
+    font_weight: bold
+    font_size: 28
+    top: 0.67
+    left: 0.4
+    width: 12
+    height: 1
+
+  content_2:
+    type: table
+    top: 1.8
+    left: 0.4
+    width: 11.2
+    height: 4.5
+    table_colors: green
+    header_bold: true
+    row_height: 0.6
+    column_widths: [4, 4, 3.2]
