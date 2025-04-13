@@ -22,3 +22,4 @@ src/pptx_layout_engine/resources/slide_layouts/title_only.yml
 src/pptx_layout_engine/resources/slide_layouts/title_slide.yml
 src/pptx_layout_engine/resources/slide_layouts/two_bullet_slide.yml
 src/pptx_layout_engine/resources/slide_layouts/two_content.yml
+tests/test.py

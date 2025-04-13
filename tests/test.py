@@ -13,7 +13,6 @@ TEST = os.path.dirname(__file__)
 OUTPUT_PATH = os.path.join(TEST, "test_output.pptx")
 
 builder = PresentationBuilder(template_path=TEMPLATE_PATH)
-#%%
-builder.load_presentation("slide_deck.yml")
+builder.build_from_yaml("slide_deck.yml")
 builder.save("test_output.pptx")
 # %%

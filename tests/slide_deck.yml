@@ -8,6 +8,17 @@ slides:
       placeholder0: "Bullet Slide Title"
       placeholder1: ["Point A", "Point B", "Point C"]
 
+  - layout: image_focus.yml
+    content:
+      title: "Product Highlight"
+      hero_image: "output.png"  # Place an image at root or change path
+
+  - layout: picture_with_caption.yml
+    content:
+      placeholder0: "Picture Header"
+      placeholder1: "Image Description"
+      placeholder2: "Footer Text"
+
   - layout: comparison.yml
     content:
       placeholder0: "Comparison Title"
@@ -27,17 +38,6 @@ slides:
       title: "Presentation Title"
       sub_title: "Strategic Report"
       date: "April 2025"
-
-  - layout: image_focus.yml
-    content:
-      title: "Product Highlight"
-      hero_image: "output.png"  # Place an image at root or change path
-
-  - layout: picture_with_caption.yml
-    content:
-      placeholder0: "Picture Header"
-      placeholder1: "Image Description"
-      placeholder2: "Footer Text"
 
   - layout: section_header.yml
     content:
