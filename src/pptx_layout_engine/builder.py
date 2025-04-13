@@ -1,19 +1,47 @@
 import os
 import yaml
 import logging
+from pathlib import Path
 from importlib.resources import files
 from pptx import Presentation
 from pptx.util import Inches, Pt
+from pptx.exc import PackageNotFoundError
 from .utils import parse_color, get_alignment, get_vertical_anchor
 
 logger = logging.getLogger(__name__)
 
+from pathlib import Path
+from pptx import Presentation
+
 class PresentationBuilder:
-    def __init__(self, template_path, default_slide_layout=6):
+    def __init__(
+        self,
+        template_path: str,
+        default_slide_layout: int = 6,
+        slide_layout_path: str = None,
+        shape_layout_path: str = None
+    ):
         self.prs = Presentation(template_path)
         self.default_slide_layout = default_slide_layout
+
+        # Root for fallback defaults
+        root = Path(__file__).parent
+        default_slide_layout_dir = root / "resources" / "slide_layouts"
+        default_shape_layout_dir = root / "resources" / "shape_layouts"
+
+        # Load defaults from YAML config first (used in resolving later)
         self.template_defaults = self._load_layout_defaults()
-        self.shape_defaults = self._load_shape_defaults("resources/shape_layouts/shape_defaults.yml")
+
+        # Slide Layouts: precedence = init arg > template_defaults > fallback path
+        self.slide_layout_path = Path(slide_layout_path) if slide_layout_path else \
+            Path(self.template_defaults.get("slide_layout_path", default_slide_layout_dir))
+        print(self.slide_layout_path)
+        # Shape Layouts: precedence = init arg > template_defaults > fallback path
+        self.shape_layout_path = Path(shape_layout_path) if shape_layout_path else \
+            Path(self.template_defaults.get("shape_layout_path", default_shape_layout_dir))
+
+        # Load shape defaults from resolved path
+        self.shape_defaults = self._load_shape_defaults(self.shape_layout_path / "shape_defaults.yml")
 
         self.shape_handlers = {
             "text": self._add_text_shape,
@@ -67,10 +95,16 @@ class PresentationBuilder:
     def _fill_placeholder(self, slide, name, value, shape_cfg, defaults, color_schemes):
         try:
             idx = int(name.replace("placeholder", ""))
-            placeholder = slide.placeholders[idx]
-        except (ValueError, IndexError):
-            logger.warning(f"⚠️ Could not find placeholder '{name}'")
-            return
+            placeholder = next((ph for ph in slide.placeholders if ph.placeholder_format.idx == idx), None)
+
+            if not placeholder:
+                logger.warning(f"⚠️ No placeholder with index {idx} on this slide layout.")
+                return
+
+            placeholder.text = value
+
+        except (ValueError, IndexError, KeyError) as e:
+            logger.warning(f"⚠️ Could not find placeholder '{name}': {e}")
 
         frame = placeholder.text_frame
         frame.clear()
@@ -191,6 +225,19 @@ class PresentationBuilder:
         height = Inches(shape_cfg.get("height", 3.0))
         slide.shapes.add_picture(image_path, left, top, width, height)
 
+    @staticmethod
+    def _load_template_safely(template_path: str | Path) -> Presentation:
+        path = Path(template_path)
+        if not path.exists():
+            raise FileNotFoundError(f"❌ Template not found: {path.resolve()}")
+        if not path.is_file() or path.suffix.lower() != ".pptx":
+            raise ValueError(f"❌ Invalid PowerPoint file: {path.resolve()}")
+
+        try:
+            return Presentation(str(path))
+        except PackageNotFoundError as e:
+            raise ValueError(f"❌ Cannot open PPTX package at {path.resolve()}") from e
+
     def clear_all_slides(self):
         while self.prs.slides:
             self.prs.slides._sldIdLst.remove(self.prs.slides._sldIdLst[0])
@@ -223,12 +270,17 @@ class PresentationBuilder:
             deck = yaml.safe_load(f)
 
         if template_path := deck.get("template"):
-            self.prs = Presentation(template_path)
+            self.prs = self._load_template_safely(template_path)
             if clear_slides:
                 self.clear_all_slides()
 
         defaults = deck.get("defaults", {})
-        layout_root = defaults.get("slide_layout_path", "")
+        layout_root = Path(
+            self.slide_layout_path or
+            self.template_defaults.get("slide_layout_path") or
+            Path(__file__).parent / "resources" / "slide_layouts"
+        )
+
         self.template_defaults.update(defaults)
 
         for idx, slide_def in enumerate(deck.get("slides", [])):
@@ -239,7 +291,7 @@ class PresentationBuilder:
                 continue
             full_layout_path = os.path.join(layout_root, layout_file)
             if not os.path.exists(full_layout_path):
-                logger.warning(f"[Slide {idx}] Layout not found: {full_layout_path}. Skipping.")
+                logger.warning(f"[Slide {idx}] Layout not found in: {full_layout_path}. Skipping.")
                 continue
             self.add_slide(layout=full_layout_path, content=content)
 

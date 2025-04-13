@@ -11,8 +11,9 @@ SLIDE_LAYOUTS_DIR = os.path.join(ROOT, "src", "pptx_layout_engine", "resources",
 TEMPLATE_PATH = os.path.join(ROOT, "src", "pptx_layout_engine", "resources", "powerpoint_templates", "template.pptx")
 TEST = os.path.dirname(__file__)
 OUTPUT_PATH = os.path.join(TEST, "test_output.pptx")
-
 builder = PresentationBuilder(template_path=TEMPLATE_PATH)
+
+#%%
 builder.build_from_yaml("slide_deck.yml")
 builder.save("test_output.pptx")
 # %%
